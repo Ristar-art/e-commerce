@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import SignUpScreen from '../screens/signUpScreen';
 import Merch from '../screens/merch';
-import SingIn from '../screens/signIn';
+import LogIn from '../screens/logIn';
 import Home from '../screens/home';
 import Red from '../screens/red';
 import White from '../screens/white';
@@ -20,8 +20,8 @@ const AppNavigator = () => {
   return (
   
       <Stack.Navigator>
-         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-        <Stack.Screen name="SingIn" component={SingIn} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Merch" component={Merch} options={{ headerShown: false }} />
         <Stack.Screen name="Red" component={Red} options={{ headerShown: false }} />

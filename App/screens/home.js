@@ -13,7 +13,7 @@ export default function Home({ navigation }) {
   
   const onSignInPressed = () => {
     // validate user
-    navigation.navigate('SingIn');
+    navigation.navigate('LogIn');
   };
 
   return (

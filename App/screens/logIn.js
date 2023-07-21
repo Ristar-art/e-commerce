@@ -10,9 +10,9 @@ const image = {
   uri: 'https://images.unsplash.com/photo-1556005693-00fff02f134c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGNocmlzdGlhbml0eXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
 };
 
-export default function SingIn({ navigation }) {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+export default function LogIn({ navigation }) {
+  const [name, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const onSignInPressed = () => {
     // validate user
@@ -23,14 +23,42 @@ export default function SingIn({ navigation }) {
     navigation.navigate('SignUpScreen');
   };
 
+  async function handleLogin(event) {
+    event.preventDefault();
+    const response = await fetch('http://localhost:8000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        password,
+      }),
+    });
+
+    try {
+      const data = await response.json();
+      if (data.user) {
+        alert('Login successful');
+        navigation.navigate('Merch');
+      } else {
+        alert('Please check your username and password');
+      }
+    } catch (error) {
+      console.error('Error parsing API response:', error);
+      alert('An error occurred while logging in. Please try again later.');
+    }
+  }
+
   return (
     <ImageBackground source={image} resizeMode="cover" style={styles.image}>
       <View style={styles.container}>
         <View style={styles.main}>
-          <CustomInputs placeholder="user name" value={username} setValue={setUsername} />
-          <CustomInputs placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true} />
-          <CustomButton text="Sign In" onPress={onSignInPressed} />
-
+          <form onSubmit={handleLogin}>
+            <CustomInputs placeholder="user name" value={name} setValue={setUsername} />
+            <CustomInputs placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true} />
+            <CustomButton type='submit' text="Sign In" />
+          </form>
           <CustomButton
             text="Don't have an account? Create one"
             onPress={onSignUpPress}
