@@ -23,8 +23,7 @@ export default function LogIn({ navigation }) {
     navigation.navigate('SignUpScreen');
   };
 
-  async function handleLogin(event) {
-    event.preventDefault();
+  async function handleLogin() {
     const response = await fetch('http://localhost:8000/api/login', {
       method: 'POST',
       headers: {
@@ -54,11 +53,9 @@ export default function LogIn({ navigation }) {
     <ImageBackground source={image} resizeMode="cover" style={styles.image}>
       <View style={styles.container}>
         <View style={styles.main}>
-          <form onSubmit={handleLogin}>
-            <CustomInputs placeholder="user name" value={name} setValue={setUsername} />
-            <CustomInputs placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true} />
-            <CustomButton type='submit' text="Sign In" />
-          </form>
+          <CustomInputs placeholder="user name" value={name} setValue={setUsername} />
+          <CustomInputs placeholder="Password" value={password} setValue={setPassword} secureTextEntry={true} />
+          <CustomButton text="Sign In" onPress={handleLogin} />
           <CustomButton
             text="Don't have an account? Create one"
             onPress={onSignUpPress}
