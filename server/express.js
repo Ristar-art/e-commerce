@@ -31,25 +31,31 @@ app.post('/api/signup', async (req, res) => {
 });
 
 app.post('/api/login', async (req, res) => {
- 
-  const user = await User.findOne({
-    name: req.body.name,
-    password: req.body.password,
-})
-if(user){
-  const token = jwt.sign({
-       name: req.body.name,
-       email: req.body.email,
-      
-  }, 'secret123')
-  return res.json({status:'ok', user: true})
-}else {
-  return res.json({status: 'error', user: false})
-}
+  const { name, password } = req.body;
+
+  try {
+    const user = await User.findOne({
+      name: name,
+      password: password,
+    });
+
+    if (!user) {
+      return res.json({ status: 'error', user: false });
+    }
+
+    const accessToken = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.ACCESS_TOKEN_SECRET
+    );
+
+    return res.json({ accessToken: accessToken, user: true });
+  } catch (err) {
+    return res.json({ status: 'error', user: false });
+  }
 });
 
 //stripe cecktout 
-app.post("/create-checkout-session", async (req, res) => {
+app.post("/create-checkout-session",authenticateToken, async (req, res) => {
   try {
     const storeItems = {
       1: { priceInCents: 2000, name: "T-shirt" },
@@ -91,6 +97,17 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
 
 app.listen(8000, () => {
   console.log('server started'); 

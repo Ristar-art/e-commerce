@@ -39,7 +39,7 @@ export default function LogIn({ navigation }) {
       const data = await response.json();
       if (data.user) {
         alert('Login successful');
-        navigation.navigate('Merch');
+        navigation.navigate('Merch', { accessToken: data.accessToken });
       } else {
         alert('Please check your username and password');
       }

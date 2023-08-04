@@ -61,11 +61,11 @@ const BuyHere = ({ totalPrice, itemCount, handleCircularComponentPress }) => {
   );
 };
 
-export default function Merch() {
+export default function Merch({ route }) {
   const navigation = useNavigation();
   const [images, setImages] = useState([
-    { merchandise: 'https://plus.unsplash.com/premium_photo-1678313763247-7f2379b568b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1460&q=80', price: 'R20', key: '1' , name:'T-sirt'},
-    { merchandise: 'https://images.unsplash.com/photo-1586202690944-7282c12105f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGNocmlzdGlhbml0eXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60', price: 'R30', key: '2', name :'Cap' },
+    { merchandise: 'https://images.unsplash.com/photo-1627462932730-846d957668a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2076&q=80', price: 'R20', key: '1' , name:'T-sirt'},
+    { merchandise: 'https://th.bing.com/th/id/OIP.yqiIJAftvfs-ygrLl5WLfAHaEm?pid=ImgDet&rs=1', price: 'R30', key: '2', name :'Cap' },
     // Add more image data if needed
   ]);
 
@@ -78,7 +78,7 @@ export default function Merch() {
       return acc;
     }, {})
   );
-
+  const { accessToken } = route.params;
   const handleImagePress = (key) => {
     const selectedImage = images.find((item) => item.key === key);
     if (selectedImage) {
@@ -109,6 +109,7 @@ export default function Merch() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify({ items }),
     })
